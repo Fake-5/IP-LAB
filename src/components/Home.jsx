@@ -9,6 +9,9 @@ import HeartIcon from '@mui/icons-material/Favorite';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import InsightsIcon from '@mui/icons-material/Insights';
 import ScoreIcon from '@mui/icons-material/Score';
+import SplitText from "./SplitText";
+import GradientText from './GradientText'
+import SpotlightCard from './SpotlightCard';
 
 const Home = () => {
   const testsAndAlgorithms = [
@@ -38,6 +41,7 @@ const Home = () => {
       icon: <ScoreIcon style={{ fontSize: 40, color: "orange" }} />,
     },
   ];
+
   const carouselRef = useRef(null);
 
   useEffect(() => {
@@ -77,7 +81,14 @@ const Home = () => {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              Login
+              <GradientText
+                colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+                animationSpeed={3.5}
+                showBorder={false}
+                className="custom-class"
+              >
+                Login
+              </GradientText>
             </motion.div>
             </Link>
           </div>
@@ -90,7 +101,17 @@ const Home = () => {
               <h1>
                 Air Pollution <span style={{ color: "green", fontSize: 45 }}>Health</span> Monitoring
               </h1>
-              <p>Monitor patient health and predict diseases related to air pollution.</p>
+              <SplitText
+                text="Monitor patient health and predict diseases related to air pollution."
+                className="text-2xl font-semibold text-center"
+                delay={25}
+                animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
+                animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
+                easing="easeOutCubic"
+                threshold={0.2}
+                rootMargin="-50px"
+              />
+              {/*<p>Monitor patient health and predict diseases related to air pollution.</p>*/}
             </div>
             <div>
               <img src={med} alt="" height="350" className="homeimg" />
@@ -104,8 +125,10 @@ const Home = () => {
               <div className="carousel" ref={carouselRef}>
                 {testsAndAlgorithms.map((item, index) => (
                   <div className="carousel-box" key={index}>
-                    <div className="icon-container">{item.icon}</div>
-                    <h3>{item.title}</h3>
+                    <div style={{display:'flex',justifyContent:'center',gap:20}}>
+                      <div className="icon-container">{item.icon}</div>
+                      <h3>{item.title}</h3>
+                    </div>
                     <p>{item.description}</p>
                   </div>
                 ))}
