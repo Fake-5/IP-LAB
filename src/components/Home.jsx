@@ -70,6 +70,7 @@ const Home = () => {
             <p to="/" className="nav-link">Home</p>
             <p to="/login" className="nav-link">About</p>
             <p to="/dashboard" className="nav-link">Contact</p>
+            <Link to="login" style={{textDecoration:'none'}}>
             <motion.div
               className="loginbutton"
               whileHover={{ scale: 1.1 }}
@@ -78,6 +79,7 @@ const Home = () => {
             >
               Login
             </motion.div>
+            </Link>
           </div>
         </nav>
 
