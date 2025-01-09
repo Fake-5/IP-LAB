@@ -11,7 +11,6 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import ScoreIcon from '@mui/icons-material/Score';
 import SplitText from "./SplitText";
 import GradientText from './GradientText'
-import SpotlightCard from './SpotlightCard';
 
 const Home = () => {
   const testsAndAlgorithms = [
