@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AQIChart from "./AQIChart";
 import SearchBar from "./Searchbar";
 import "./DashBoard.css";
+import NavigationIcon from '@mui/icons-material/Navigation';
 
 const aqiData = {
   "Coimbatore": 88,
@@ -50,8 +51,8 @@ const Dashboard = () => {
         </div>
 
         <div className="aqi-color-chart">
-          <div className="pin" style={{ left: `${(aqi / 300) * 100}%`, backgroundColor: text }}>
-            ▼
+          <div className="pin" style={{ left: `${(aqi / 300) * 100}%` }}>
+            <NavigationIcon />
           </div>
           <div className="color-bar">
             <div className="good"></div>
@@ -65,16 +66,35 @@ const Dashboard = () => {
       </div>
 
       <div className="pollutants-section">
-        <h2>Major Pollutants</h2>
-        <div className="pollutants-grid">
-          <div className="pollutant pm25"><span>PM2.5</span><span>35 µg/m³</span></div>
-          <div className="pollutant pm10"><span>PM10</span><span>55 µg/m³</span></div>
-          <div className="pollutant no2"><span>NO2</span><span>20 ppb</span></div>
-          <div className="pollutant so2"><span>SO2</span><span>15 ppb</span></div>
-          <div className="pollutant co"><span>CO</span><span>0.9 ppm</span></div>
-          <div className="pollutant o3"><span>O3</span><span>30 ppb</span></div>
-        </div>
-      </div>
+  <h2>Major Pollutants</h2>
+  <div className="pollutants-grid">
+    <div className="pollutant pm25">
+      <span>Particulate Matter (PM2.5)</span>
+      <span>35 µg/m³</span>
+    </div>
+    <div className="pollutant pm10">
+      <span>Particulate Matter (PM10)</span>
+      <span>55 µg/m³</span>
+    </div>
+    <div className="pollutant no2">
+      <span>Nitrogen Dioxide (NO₂)</span>
+      <span>20 ppb</span>
+    </div>
+    <div className="pollutant so2">
+      <span>Sulfur Dioxide (SO₂)</span>
+      <span>15 ppb</span>
+    </div>
+    <div className="pollutant co">
+      <span>Carbon Monoxide (CO)</span>
+      <span>0.9 ppm</span>
+    </div>
+    <div className="pollutant o3">
+      <span>Ozone (O₃)</span>
+      <span>30 ppb</span>
+    </div>
+  </div>
+</div>
+
 
       <AQIChart />
     </div>
