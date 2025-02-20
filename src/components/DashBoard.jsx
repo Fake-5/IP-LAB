@@ -97,6 +97,7 @@ const Dashboard = () => {
 
 
       <AQIChart />
+      
     </div>
   );
 };
