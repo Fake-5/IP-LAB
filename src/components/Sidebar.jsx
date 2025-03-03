@@ -63,7 +63,7 @@ const getAQIDescription = (aqi) => {
 const getAQIAnimation = (aqi) => {
   if (aqi <= 50) return earthHappy; // Happy Earth
   if (aqi <= 100) return earthmask; // Neutral Face
-  if (aqi <= 300) return none; // Sick Face
+  if (aqi <= 300) return "none"; // Sick Face
   return; // Danger, Hazardous
 };
 
@@ -188,32 +188,40 @@ const Sidebar = () => {
 
 
         {/* Pollutants & Chart Section */}
-        <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-10">
-          {/* Pollutants Section */}
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[
-                { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
-                { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
-                { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
-                { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
-                { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
-                { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
-              ].map((pollutant, index) => (
-                <div key={index} className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex justify-between items-center transition-transform transform hover:scale-105`}>
-                  <span className="font-medium">{pollutant.name}</span>
-                  <span className="text-lg font-semibold">{pollutant.value} {pollutant.unit}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+<div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-10">
+  {/* Pollutants Section */}
+  <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
+    <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
+    
+    {/* Grid Layout to prevent overlapping */}
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {[
+        { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
+        { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
+        { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
+        { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
+        { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
+        { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
+      ].map((pollutant, index) => (
+        <div
+          key={index}
+          className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
+        >
+          <span className="font-medium">{pollutant.name}</span>
+          <span className="text-lg font-semibold">{pollutant.value} {pollutant.unit}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+  {/* AQI Chart */}
+  <AQIChart />
+</div>
+
           
-          {/* AQI Chart */}
-          <AQIChart />
+          
         </div>
       </div>
-    </div>
+    
   );
 };
 

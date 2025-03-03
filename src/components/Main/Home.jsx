@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
 import "./Home.css";
+import Prediction from "../Prediction"
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       <div className="main-content">
         <Header />
         <Sidebar />
+        <Prediction />
       </div>
     </div>
   );
