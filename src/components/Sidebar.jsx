@@ -138,82 +138,84 @@ const Sidebar = () => {
   };
 
 return (
-  <div className="flex bg-gray-100">
+  <div className="flex bg-[#e0ebeb]">
     {/* Sidebar - Fixed on the Left */}
-    <div className="w-64 bg-gradient-to-b from-blue-700 to-blue-900 text-white p-6 shadow-lg fixed top-0 left-0 h-screen">
+    <div className="w-64 bg-[#a7bcb9] text-black p-6 shadow-lg fixed top-[68px] left-0 h-screen">
       <h1 className="text-2xl font-bold mb-6">AQI Tracker</h1>
-      <ul className="space-y-4">
-        <li className="p-3 rounded-lg hover:bg-blue-800 transition cursor-pointer">Dashboard</li>
-        <li className="p-3 rounded-lg hover:bg-blue-800 transition cursor-pointer">Disease Prediction</li>
-        <li className="p-3 rounded-lg hover:bg-blue-800 transition cursor-pointer">Preventive Measures</li>
+      <ul className="space-y-4 ">
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Dashboard</li>
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Disease Prediction</li>
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Preventive Measures</li>
       </ul>
     </div>
 
     {/* Main Dashboard */}
     <div className="ml-64 flex-1 p-8">
-      {/* Header - Now Scrolls Normally */}
-      <div className="p-4 mb-6 w-[420px] items-center justify-center ml-96">
-        <div className="relative w-96 mx-auto">
-          <div className="flex items-center bg-white shadow-md rounded-full p-3 transition-transform hover:scale-105">
-            <Search className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search city..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="w-xl pl-2 outline-none text-gray-700"
-            />
-          </div>
-          {filteredCities.length > 0 && (
-            <ul className="absolute w-full mt-1 bg-white shadow-lg rounded-lg max-h-60 overflow-auto">
-              {filteredCities.map((city, index) => (
-                <li
-                  key={index}
-                  className="flex items-center justify-between px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => handleSelectCity(city)}
-                >
-                  <span>{city.city}</span>
-                  <LocationOn className="text-gray-500" />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+  {/* Header - Now Scrolls Normally */}
+  <div className="p-4 mb-6 w-full flex justify-center items-center ">
+    <div className="relative w-full max-w-lg m-10">
+      <div className="flex items-center bg-white shadow-md rounded-full p-3 transition-transform hover:scale-105">
+        <Search className="text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search city..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="w-full pl-2 outline-none text-gray-700"
+        />
       </div>
+      {filteredCities.length > 0 && (
+        <ul className="absolute w-full mt-1 bg-white shadow-lg rounded-lg max-h-60 overflow-auto">
+          {filteredCities.map((city, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              onClick={() => handleSelectCity(city)}
+            >
+              <span>{city.city}</span>
+              <LocationOn className="text-gray-500" />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
 
-      {/* AQI Card */}
-      <AQIBox aqi={aqi} city={location} />
+  {/* AQI Card */}
+  <AQIBox aqi={aqi} city={location} />
 
-      {/* Pollutants & Chart Section */}
-      <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-10">
-        {/* Pollutants Section */}
-        <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
+  {/* Pollutants & Chart Section */}
+  <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-10">
+    {/* Pollutants Section */}
+    <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
 
-          {/* Grid Layout */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
-              { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
-              { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
-              { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
-              { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
-              { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
-            ].map((pollutant, index) => (
-              <div
-                key={index}
-                className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
-              >
-                <span className="font-medium">{pollutant.name}</span>
-                <span className="text-lg font-semibold">{pollutant.value} {pollutant.unit}</span>
-              </div>
-            ))}
+      {/* Grid Layout */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {[
+          { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
+          { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
+          { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
+          { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
+          { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
+          { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
+        ].map((pollutant, index) => (
+          <div
+            key={index}
+            className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
+          >
+            <span className="font-medium">{pollutant.name}</span>
+            <span className="text-lg font-semibold">{pollutant.value} {pollutant.unit}</span>
           </div>
-        </div>
-        {/* AQI Chart */}
-        <AQIChart />
+        ))}
       </div>
     </div>
+
+    {/* AQI Chart */}
+    <AQIChart />
+  </div>
+</div>
+
   </div>
 );
 };
