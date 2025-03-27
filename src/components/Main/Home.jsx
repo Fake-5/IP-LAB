@@ -10,7 +10,6 @@ const Home = () => {
       <div className="main-content">
         <Header />
         <Sidebar />
-        <Prediction />
       </div>
     </div>
   );

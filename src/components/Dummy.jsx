@@ -4,7 +4,6 @@ import Lottie from "lottie-react";
 import earthHappy from '../images/happyearth.json'; // Import Lottie JSON file
 import earthmask from '../images/maskearth.json'; // Import Lottie JSON file
 import AQIChart from './AQIChart';
-import Prediction from "./Prediction";
 
 const tamilNaduCities = [
   { city: "Chennai", lat: 13.0827, lon: 80.2707 },
@@ -44,19 +43,6 @@ const tamilNaduCities = [
   { city: "Viluppuram", lat: 11.9391, lon: 79.4878 },
   { city: "Tirupathur", lat: 12.4966, lon: 78.5730 }
 ];
-const DiseasePrediction = () => (
-  <div className="p-8">
-    <h2 className="text-2xl font-bold mb-4">Disease Prediction</h2>
-    {/* Add your disease prediction content here */}
-  </div>
-);
-
-const PreventiveMeasures = () => (
-  <div className="p-8">
-    <h2 className="text-2xl font-bold mb-4">Preventive Measures</h2>
-    {/* Add your preventive measures content here */}
-  </div>
-);
 
 const getAQIColor = (aqi) => {
   if (aqi <= 50) return "bg-green-500"; // Good
@@ -90,7 +76,7 @@ const AQIBox = ({ aqi, city }) => {
   }, [aqi]);
   const animationData = getAQIAnimation(aqi); // Get animation once
   return (
-    <div className={`w-4/5 mx-auto p-14 rounded-2xl shadow-2xl text-white flex items-center justify-between ${getAQIColor(aqi)}`}>
+    <div className={w-4/5 mx-auto p-14 rounded-2xl shadow-2xl text-white flex items-center justify-between ${getAQIColor(aqi)}}>
       {/* Left Section - Text Info */}
       <div className="text-left">
         <h2 className="text-4xl font-bold">{city}</h2>
@@ -117,8 +103,6 @@ const AQIBox = ({ aqi, city }) => {
 };
 
 const Sidebar = () => {
-  const [activeSection, setActiveSection] = useState("Dashboard");
-
   const [location, setLocation] = useState("Coimbatore");
   const [aqi, setAqi] = useState(null);
   const [pollutants, setPollutants] = useState({});
@@ -126,7 +110,7 @@ const Sidebar = () => {
   const [filteredCities, setFilteredCities] = useState([]);
 
   const fetchAQIData = async (latitude, longitude) => {
-    const apiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&domains=cams_global`;
+    const apiUrl = https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&domains=cams_global;
 
     try {
       const response = await fetch(apiUrl);
@@ -171,86 +155,90 @@ const Sidebar = () => {
     setFilteredCities([]);
   };
 
-  return (
-    <div className="flex bg-[#e0ebeb]">
-      {/* Sidebar - Fixed on the Left */}
-      <div className="w-64 bg-[#a7bcb9] text-black p-6 shadow-lg fixed top-[68px] left-0 h-screen">
-        <h1 className="text-2xl font-bold mb-6">AQI Tracker</h1>
-        <ul className="space-y-4">
-          <li 
-            className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "Dashboard" ? "bg-[#637471]" : ""}`}
-            onClick={() => setActiveSection("Dashboard")}
-          >
-            Dashboard
-          </li>
-          <li 
-            className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "DiseasePrediction" ? "bg-[#637471]" : ""}`}
-            onClick={() => setActiveSection("DiseasePrediction")}
-          >
-            Disease Prediction
-          </li>
-          <li 
-            className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "PreventiveMeasures" ? "bg-[#637471]" : ""}`}
-            onClick={() => setActiveSection("PreventiveMeasures")}
-          >
-            Preventive Measures
-          </li>
-        </ul>
-      </div>
-
-      {/* Main Content */}
-      <div className="ml-64 flex-1 p-8">
-        {activeSection === "Dashboard" && (
-          <>
-            {/* Search Bar */}
-            <div className="p-4 mb-6 w-full flex justify-center items-center">
-              <div className="flex items-center bg-white shadow-md rounded-full p-3 transition-transform hover:scale-105">
-                      <Search className="text-gray-500" />
-                      <input
-                        type="text"
-                        placeholder="Search city..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="w-full pl-2 outline-none text-gray-700"
-                      />
-                    </div>
-            </div>
-            <AQIBox aqi={aqi} city={location} />
-            {/* AQI Card */}
-            <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
-                  
-              {/* Grid Layout */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[
-                { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
-                { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
-                { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
-                { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
-                { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
-                { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
-              ].map((pollutant, index) => (
-                <div
-                  key={index}
-                  className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
-                >
-                  <span className="font-medium">{pollutant.name}</span>
-                  <span className="text-lg font-semibold">
-                    {pollutant.value} {pollutant.unit}
-                  </span>
-                </div>
-              ))}
-            </div>
-            </div>
-              {/* AQI Chart */}
-              <AQIChart />
-          </>
-        )}
-        {activeSection === "DiseasePrediction" && <Prediction />}
-        {activeSection === "PreventiveMeasures" && <PreventiveMeasures />}
-      </div>
+return (
+  <div className="flex bg-[#e0ebeb]">
+    {/* Sidebar - Fixed on the Left */}
+    <div className="w-64 bg-[#a7bcb9] text-black p-6 shadow-lg fixed top-[68px] left-0 h-screen">
+      <h1 className="text-2xl font-bold mb-6">AQI Tracker</h1>
+      <ul className="space-y-4 ">
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Dashboard</li>
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Disease Prediction</li>
+        <li className="p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins">Preventive Measures</li>
+      </ul>
     </div>
-  );
+
+    {/* Main Dashboard */}
+    <div className="ml-64 flex-1 p-8">
+  {/* Header - Now Scrolls Normally */}
+  <div className="p-4 mb-6 w-full flex justify-center items-center ">
+    <div className="relative w-full max-w-lg m-10">
+      <div className="flex items-center bg-white shadow-md rounded-full p-3 transition-transform hover:scale-105">
+        <Search className="text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search city..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="w-full pl-2 outline-none text-gray-700"
+        />
+      </div>
+      {filteredCities.length > 0 && (
+        <ul className="absolute w-full mt-1 bg-white shadow-lg rounded-lg max-h-60 overflow-auto">
+          {filteredCities.map((city, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              onClick={() => handleSelectCity(city)}
+            >
+              <span>{city.city}</span>
+              <LocationOn className="text-gray-500" />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+
+  {/* AQI Card */}
+  <AQIBox aqi={aqi} city={location} />
+
+  <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-10">
+  {/* Pollutants Section */}
+  <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
+    <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
+
+    {/* Grid Layout */}
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {[
+        { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
+        { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
+        { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
+        { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
+        { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
+        { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
+      ].map((pollutant, index) => (
+        <div
+          key={index}
+          className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
+        >
+          <span className="font-medium">{pollutant.name}</span>
+          <span className="text-lg font-semibold">
+            {pollutant.value} {pollutant.unit}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
+    {/* AQI Chart */}
+    <AQIChart />
+  </div>
+</div>
+
+  </div>
+);
 };
 
 export default Sidebar;
