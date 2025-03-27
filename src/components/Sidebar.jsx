@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Search, LocationOn } from "@mui/icons-material";
 import Lottie from "lottie-react";
 import earthHappy from '../images/happyearth.json'; // Import Lottie JSON file
@@ -61,13 +61,20 @@ const getAQIDescription = (aqi) => {
 };
 
 const getAQIAnimation = (aqi) => {
-  if (aqi <= 50) return earthHappy; // Happy Earth
-  if (aqi <= 100) return earthmask; // Neutral Face
-  if (aqi <= 300) return "none"; // Sick Face
-  return; // Danger, Hazardous
+  if (aqi <= 50) return earthHappy;
+  if (aqi <= 100) return earthmask;
+  return null;
 };
 
 const AQIBox = ({ aqi, city }) => {
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    if (lottieRef.current) {
+      lottieRef.current.play();
+    }
+  }, [aqi]);
+  const animationData = getAQIAnimation(aqi); // Get animation once
   return (
     <div className={`w-4/5 mx-auto p-14 rounded-2xl shadow-2xl text-white flex items-center justify-between ${getAQIColor(aqi)}`}>
       {/* Left Section - Text Info */}
@@ -77,9 +84,20 @@ const AQIBox = ({ aqi, city }) => {
         <div className="text-7xl font-extrabold mt-4">{aqi}</div>
         <p className="text-xl font-medium mt-4">{getAQIDescription(aqi)}</p>
       </div>
+      
 
-      {/* Right Section - GIF Animation */}
-      <Lottie animationData={getAQIAnimation(aqi)} loop={true} className="h-60 w-60" />
+      {/* Right Section - Lottie Animation */}
+      {animationData && (
+  <Lottie
+    animationData={animationData}
+    loop
+    autoplay
+    style={{ height: 240, width: 240 }}
+    rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
+  />
+)}
+
+
     </div>
   );
 };
@@ -219,6 +237,5 @@ return (
   </div>
 );
 };
-  
 
 export default Sidebar;
