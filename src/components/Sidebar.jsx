@@ -5,6 +5,7 @@ import earthHappy from '../images/happyearth.json'; // Import Lottie JSON file
 import earthmask from '../images/maskearth.json'; // Import Lottie JSON file
 import AQIChart from './AQIChart';
 import Prediction from "./Prediction";
+import PreventiveMeasures from "./PreventiveMeasures";
 
 const tamilNaduCities = [
   { city: "Chennai", lat: 13.0827, lon: 80.2707 },
@@ -44,19 +45,6 @@ const tamilNaduCities = [
   { city: "Viluppuram", lat: 11.9391, lon: 79.4878 },
   { city: "Tirupathur", lat: 12.4966, lon: 78.5730 }
 ];
-const DiseasePrediction = () => (
-  <div className="p-8">
-    <h2 className="text-2xl font-bold mb-4">Disease Prediction</h2>
-    {/* Add your disease prediction content here */}
-  </div>
-);
-
-const PreventiveMeasures = () => (
-  <div className="p-8">
-    <h2 className="text-2xl font-bold mb-4">Preventive Measures</h2>
-    {/* Add your preventive measures content here */}
-  </div>
-);
 
 const getAQIColor = (aqi) => {
   if (aqi <= 50) return "bg-green-500"; // Good
@@ -98,27 +86,23 @@ const AQIBox = ({ aqi, city }) => {
         <div className="text-7xl font-extrabold mt-4">{aqi}</div>
         <p className="text-xl font-medium mt-4">{getAQIDescription(aqi)}</p>
       </div>
-      
 
       {/* Right Section - Lottie Animation */}
       {animationData && (
-  <Lottie
-    animationData={animationData}
-    loop
-    autoplay
-    style={{ height: 240, width: 240 }}
-    rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
-  />
-)}
-
-
+        <Lottie
+          animationData={animationData}
+          loop
+          autoplay
+          style={{ height: 240, width: 240 }}
+          rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
+        />
+      )}
     </div>
   );
 };
 
 const Sidebar = () => {
   const [activeSection, setActiveSection] = useState("Dashboard");
-
   const [location, setLocation] = useState("Coimbatore");
   const [aqi, setAqi] = useState(null);
   const [pollutants, setPollutants] = useState({});
@@ -148,27 +132,28 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    fetchAQIData(11.0168, 76.9558);
+    fetchAQIData(11.0168, 76.9558); // Default to Coimbatore's latitude and longitude
   }, []);
 
   const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase(); // Make search query lowercase
     setSearchQuery(e.target.value);
-    if (e.target.value) {
-      setFilteredCities(
-        tamilNaduCities.filter((city) =>
-          city.city.toLowerCase().includes(e.target.value.toLowerCase())
-        )
+
+    if (query) {
+      const filtered = tamilNaduCities.filter((city) =>
+        city.city.toLowerCase().includes(query) // Convert city names to lowercase for case-insensitive search
       );
+      setFilteredCities(filtered);
     } else {
-      setFilteredCities([]);
+      setFilteredCities([]); // Reset the filtered cities if the search query is empty
     }
   };
 
   const handleSelectCity = (city) => {
     setLocation(city.city);
-    fetchAQIData(city.lat, city.lon);
-    setSearchQuery("");
-    setFilteredCities([]);
+    fetchAQIData(city.lat, city.lon); // Fetch AQI data for selected city's latitude and longitude
+    setSearchQuery(""); // Clear the search input
+    setFilteredCities([]); // Clear filtered cities
   };
 
   return (
@@ -177,19 +162,19 @@ const Sidebar = () => {
       <div className="w-64 bg-[#a7bcb9] text-black p-6 shadow-lg fixed top-[68px] left-0 h-screen">
         <h1 className="text-2xl font-bold mb-6">AQI Tracker</h1>
         <ul className="space-y-4">
-          <li 
+          <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "Dashboard" ? "bg-[#637471]" : ""}`}
             onClick={() => setActiveSection("Dashboard")}
           >
             Dashboard
           </li>
-          <li 
+          <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "DiseasePrediction" ? "bg-[#637471]" : ""}`}
             onClick={() => setActiveSection("DiseasePrediction")}
           >
             Disease Prediction
           </li>
-          <li 
+          <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${activeSection === "PreventiveMeasures" ? "bg-[#637471]" : ""}`}
             onClick={() => setActiveSection("PreventiveMeasures")}
           >
@@ -203,49 +188,76 @@ const Sidebar = () => {
         {activeSection === "Dashboard" && (
           <>
             {/* Search Bar */}
-            <div className="p-4 mb-6 w-full flex justify-center items-center">
+            <div className="p-4 mb-6 w-full flex justify-center items-center mt-10 relative">
               <div className="flex items-center bg-white shadow-md rounded-full p-3 transition-transform hover:scale-105">
-                      <Search className="text-gray-500" />
-                      <input
-                        type="text"
-                        placeholder="Search city..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="w-full pl-2 outline-none text-gray-700"
-                      />
-                    </div>
-            </div>
-            <AQIBox aqi={aqi} city={location} />
-            {/* AQI Card */}
-            <div className="p-6 bg-white rounded-lg shadow-lg w-full md:w-auto">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
-                  
-              {/* Grid Layout */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[
-                { name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
-                { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
-                { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
-                { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
-                { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
-                { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
-              ].map((pollutant, index) => (
-                <div
-                  key={index}
-                  className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
-                >
-                  <span className="font-medium">{pollutant.name}</span>
-                  <span className="text-lg font-semibold">
-                    {pollutant.value} {pollutant.unit}
-                  </span>
+                <Search className="text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Search city..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="w-[300px] pl-2 outline-none text-gray-700"
+                />
+              </div>
+
+              {/* Filtered Cities Dropdown */}
+              {filteredCities.length > 0 && (
+                <div className="bg-white shadow-lg p-4 w-[300px] absolute left-[650px] top-[80px] rounded-3xl">
+                  <ul>
+                    {filteredCities.map((city) => (
+                      <li
+                        key={city.city}
+                        className="cursor-pointer hover:bg-gray-200 p-2 rounded flex items-center space-x-2"
+                        onClick={() => handleSelectCity(city)}
+                      >
+                        <LocationOn className="text-gray-500" />
+                        <span>{city.city}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
+              )}
             </div>
-            </div>
+
+
+
+            {/* Display AQI box */}
+            <AQIBox aqi={aqi} city={location} />
+
+            {/* AQI Card */}
+            <div className="flex justify-center items-center mt-14 ml-20">
+              <div className="p-6 bg-white rounded-lg shadow-lg md:w-auto">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Major Pollutants</h2>
+
+                {/* Grid Layout */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[{ name: "PM2.5", value: pollutants.pm25, unit: "µg/m³", color: "from-pink-400 to-pink-600" },
+                  { name: "PM10", value: pollutants.pm10, unit: "µg/m³", color: "from-yellow-400 to-yellow-600" },
+                  { name: "NO₂", value: pollutants.no2, unit: "ppb", color: "from-blue-400 to-blue-600" },
+                  { name: "SO₂", value: pollutants.so2, unit: "ppb", color: "from-purple-400 to-purple-600" },
+                  { name: "CO", value: pollutants.co, unit: "ppm", color: "from-red-400 to-red-600" },
+                  { name: "O₃", value: pollutants.o3, unit: "ppb", color: "from-green-400 to-green-600" },
+                  ].map((pollutant, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 rounded-lg shadow-md bg-gradient-to-r ${pollutant.color} text-white flex flex-col items-center justify-center transition-transform transform hover:scale-105`}
+                    >
+                      <span className="font-medium">{pollutant.name}</span>
+                      <span className="text-lg font-semibold">
+                        {pollutant.value} {pollutant.unit}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* AQI Chart */}
               <AQIChart />
+            </div>
           </>
         )}
+
+        {/* Other Sections */}
         {activeSection === "DiseasePrediction" && <Prediction />}
         {activeSection === "PreventiveMeasures" && <PreventiveMeasures />}
       </div>
