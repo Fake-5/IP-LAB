@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import pandas as pd
 import requests
 import joblib
 
 app = Flask(__name__)
+CORS(app)  # Enable Cross-Origin Requests
 
+# Load models
 regressor = joblib.load("health_score_model.pkl")
 classifier = joblib.load("health_class_model.pkl")
 label_encoder = joblib.load("label_encoder.pkl")
@@ -30,26 +33,26 @@ def predict_health_impact():
     lon = request.args.get("lon")
     if not lat or not lon:
         return jsonify({"error": "Latitude and Longitude are required!"}), 400
+
     try:
         lat, lon = float(lat), float(lon)
     except ValueError:
         return jsonify({"error": "Invalid latitude or longitude!"}), 400
+
     live_data = get_live_air_quality(lat, lon)
     if not live_data:
         return jsonify({"error": "Failed to fetch air quality data"}), 500
 
     df = pd.DataFrame([live_data])
-
-    health_score = float(regressor.predict(df)[0])  
-    health_class_encoded = classifier.predict(df)[0]
+    health_score = float(regressor.predict(df)[0])
+    health_class_encoded = int(classifier.predict(df)[0])  # Convert to int
     health_class = str(label_encoder.inverse_transform([health_class_encoded])[0])
 
     return jsonify({
-        "PredictedHealthImpactScore": health_score,
+        "PredictedHealthImpactScore": round(health_score, 1),
         "PredictedHealthImpactClass": health_class,
         "AQI": live_data["AQI"]
     })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
+    app.run(debug=True)

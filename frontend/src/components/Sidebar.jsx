@@ -98,13 +98,13 @@ const Sidebar = () => {
   const [filteredCities, setFilteredCities] = useState([]);
 
   const fetchAQIData = async (latitude, longitude) => {
-    const apiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&domains=cams_global`;
+    const apiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=european_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
 
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      setAqi(data.current.us_aqi);
+      setAqi(data.current.european_aqi);
       setPollutants({
         pm25: data.current.pm2_5,
         pm10: data.current.pm10,
@@ -148,10 +148,10 @@ const Sidebar = () => {
       {/* Sidebar - Fixed on the Left */}
       <div className="w-64 bg-[#a7bcb9] text-black p-6 shadow-lg fixed top-[68px] left-0 h-screen">
         <h1 className="text-2xl font-bold mb-6 font-poppins">AQI Tracker</h1>
-        <ul className="space-y-4">
+        <ul className="space-y-4 mt-20">
           <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${
-              activeSection === "Dashboard" ? "bg-[#637471]" : ""
+              activeSection === "Dashboard" ? "bg-[#637471] text-white" : ""
             }`}
             onClick={() => setActiveSection("Dashboard")}
           >
@@ -159,7 +159,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${
-              activeSection === "DiseasePrediction" ? "bg-[#637471]" : ""
+              activeSection === "DiseasePrediction" ? "bg-[#637471] text-white" : ""
             }`}
             onClick={() => setActiveSection("DiseasePrediction")}
           >
@@ -167,7 +167,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${
-              activeSection === "PreventiveMeasures" ? "bg-[#637471]" : ""
+              activeSection === "PreventiveMeasures" ? "bg-[#637471] text-white" : ""
             }`}
             onClick={() => setActiveSection("PreventiveMeasures")}
           >
@@ -189,13 +189,13 @@ const Sidebar = () => {
                   placeholder="Search city..."
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  className="w-[300px] pl-2 outline-none text-gray-700 font-poppins"
+                  className="w-[400px] pl-2 outline-none text-gray-700 font-poppins"
                 />
               </div>
 
               {/* Filtered Cities Dropdown */}
               {filteredCities.length > 0 && (
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg p-4 w-[300px] rounded-3xl mt-2 z-50">
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg p-4 w-[400px] rounded-3xl mt-2 z-50">
                   <ul>
                     {filteredCities.map((city) => (
                       <li
@@ -203,7 +203,7 @@ const Sidebar = () => {
                         className="cursor-pointer hover:bg-gray-200 p-2 rounded flex items-center space-x-2 font-poppins"
                         onClick={() => handleSelectCity(city)}
                       >
-                        <LocationOn className="text-gray-500" />
+                        <LocationOn className="text-red-500" />
                         <span className="font-poppins">{city.city}</span>
                       </li>
                     ))}
