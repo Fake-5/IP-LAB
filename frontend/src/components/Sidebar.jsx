@@ -165,14 +165,7 @@ const Sidebar = () => {
           >
             Disease Prediction
           </li>
-          <li
-            className={`p-3 rounded-lg hover:bg-[#637471] transition cursor-pointer font-poppins ${
-              activeSection === "PreventiveMeasures" ? "bg-[#637471] text-white" : ""
-            }`}
-            onClick={() => setActiveSection("PreventiveMeasures")}
-          >
-            Preventive Measures
-          </li>
+          
         </ul>
       </div>
 
